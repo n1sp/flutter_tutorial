@@ -14,6 +14,40 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class CustomButton extends StatelessWidget {
+  // コンストラクタ
+  const CustomButton({
+    this.text,
+    this.width,
+    this.height,
+    this.onPressed,
+    Key key,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final double width;
+  final double height;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          primary: Colors.white70,
+          onPrimary: Colors.white,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.black),
+        ),
+    ));
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
