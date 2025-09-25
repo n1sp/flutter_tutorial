@@ -9,36 +9,48 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'タイマー'),
     );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  // コンストラクタ
+  const CustomButton({
+    this.text,
+    this.width,
+    this.height,
+    this.onPressed,
+    Key key,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final double width;
+  final double height;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: width,
+        height: height,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            primary: Colors.white70,
+            onPrimary: Colors.white,
+          ),
+          child: Text(
+            text,
+            style: TextStyle(color: Colors.black),
+          ),
+        ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  
   final String title;
 
   @override
@@ -46,68 +58,129 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _time = '00:00';
+  String _start = 'START';
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  void _numberPressed(String number) {}
+  void _startPressed() {}
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final size = MediaQuery.of(context).size; //ウインドウサイズ取得
+    final padding = MediaQuery.of(context).padding;
+    var maxHeight =
+        size.height - padding.top - kToolbarHeight; //ウインドウサイズからツールバーを除いた高さを計算
+
+    //Widgetのサイズ作成
+    final timeAreaHeight = maxHeight * (30 / 100);
+    final buttomAreaHeight = maxHeight * (70 / 100);
+    final buttomHeight = buttomAreaHeight * (30 / 100);
+    final buttomWidth = size.width * (18 / 100);
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            Container(
+              decoration: BoxDecoration(color: Colors.white),
+              width: size.width,
+              height: timeAreaHeight,
+              padding: EdgeInsets.only(right: 10.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '$_time',
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Container(
+                decoration: BoxDecoration(color: Colors.white),
+                width: size.width,
+                height: buttomAreaHeight,
+                child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            CustomButton(
+                                text: "1",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("1")),
+                            CustomButton(
+                                text: "2",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("2")),
+                            CustomButton(
+                                text: "3",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("3")),
+                            CustomButton(
+                                text: "4",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("4")),
+                            CustomButton(
+                                text: "5",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("5")),
+                          ]),
+                      Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            CustomButton(
+                                text: "6",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("6")),
+                            CustomButton(
+                                text: "7",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("7")),
+                            CustomButton(
+                                text: "8",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("8")),
+                            CustomButton(
+                                text: "9",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("9")),
+                            CustomButton(
+                                text: "0",
+                                width: buttomWidth,
+                                height: buttomHeight,
+                                onPressed: () => _numberPressed("0"))
+                          ]),
+                      Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            CustomButton(
+                                text: "$_start",
+                                width: size.width * (90 / 100),
+                                height: buttomHeight,
+                                onPressed: _startPressed)
+                          ])
+                    ]))
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        )),
     );
   }
 }
