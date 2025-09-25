@@ -74,9 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_time == '00:00') return;
     setState(() {
       if (_start == 'START') {
-        _start = 'START';
-      } else {
         _start = 'STOP';
+      } else {
+        _start = 'START';
       } 
     });
     Timer.periodic(
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
             timer.cancel();
           } else {
             List t = _time.split(':');
-            int sec = int.parse(t[0] * 60 + int.parse(t[1]));
+            int sec = int.parse(t[0]) * 60 + int.parse(t[1]);
             sec--;
             _time = (sec ~/ 60).toString().padLeft(2, '0') +
               ':' +
